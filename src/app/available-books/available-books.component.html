@@ -6,8 +6,20 @@
         <h2>Current Available Books List:</h2> 
         <ul *ngIf="showBookList">
             <li *ngFor="let book of bookList; let i=index" title="{{book.bookName}} is available for rent">
-                {{book.bookName}} <button (click)="rent(i)">rent</button>
+                {{book.bookName}} <button id="rentButton" (click)="rent(i)">rent</button>
             </li>
+            <div *ngIf="rentModalOpen" id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" (click)="closeModal()">&times;</span>
+                    <form action="">
+                        <label for="">Username</label>
+                        <input type="text" name="username">
+                        <label for="">Membership Number</label>
+                        <input type="text" name="membershipNo">
+                    </form>
+                    <p *ngFor="let book of rentList">You can keep {{book.bookName}} for  {{book.duration}} days, please return it by {{book.returnDate }}</p>
+                </div>
+            </div>
         </ul>
         <p *ngIf="bookList.length ==0">No books available for rent</p>
     </div>

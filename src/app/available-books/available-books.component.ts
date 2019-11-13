@@ -11,6 +11,7 @@ export class AvailableBooksComponent implements OnInit {
   public rentList: any= [];
   public curUser:any ={name: "", memNumber: ""};
   public showBookList:boolean;
+  public rentModalOpen = false;
   constructor(public router:Router, private data: DataService) { 
     this.showBookList=true;
     this.rentList=[];
@@ -66,12 +67,14 @@ export class AvailableBooksComponent implements OnInit {
       }
     ];
   }
-
   getReturnData(duration:string){
     if(!duration || duration === "") return "";
     let curDate=new Date();
     curDate.setDate(curDate.getDate()+ parseInt(duration));
     return curDate;
+  }
+  closeModal() {
+    this.rentModalOpen = false;
   }
   ngOnInit() {
     // get the user login informtion from service
@@ -79,6 +82,7 @@ export class AvailableBooksComponent implements OnInit {
   }
   // rent method
   rent(index: number){
+    this.rentModalOpen = true;
     const curBook=this.bookList[index];
     curBook.username=this.curUser.name;
     curBook.membershipNo=this.curUser.memNumber;
