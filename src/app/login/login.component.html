@@ -1,0 +1,8 @@
+<div class="home-page">
+    <h1>Login Page </h1>
+    <p><label>User Name:</label> <input [(ngModel)]="curUser.name" ngModel placeholder="please input your user name"
+            required></p>
+    <p><label>Membership Number:</label><input [(ngModel)]="curUser.memNumber" ngModel
+            placeholder="please input your membership number" required></p>
+    <button (click)="login()">Login</button>
+</div>

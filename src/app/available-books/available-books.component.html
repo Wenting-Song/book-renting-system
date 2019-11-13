@@ -1,0 +1,24 @@
+<div class="book-system">
+        <h1>Rent Book System</h1>
+        <button (click)="logout()">Logout</button>
+        <button (click)="showBookList=!showBookList">{{showBookList?"Show": "Hide"}} Book List</button>
+    <div class="book-list">
+        <h2>Current Available Books List:</h2> 
+        <ul *ngIf="showBookList">
+            <li *ngFor="let book of bookList; let i=index" title="{{book.bookName}} is available for rent">
+                {{book.bookName}} <button (click)="rent(i)">rent</button>
+            </li>
+        </ul>
+        <p *ngIf="bookList.length ==0">No books available for rent</p>
+    </div>
+    <div class="book-list">
+        <h2>Books rented</h2>
+        <ul>
+            <li *ngFor="let book of rentList; let j=index"
+                title="{{book.username}} rent this book, due date is {{book.returnDate}}">
+                {{book.bookName}} <button (click)="returnBook(j)">return</button>
+            </li>
+        </ul>
+        <p *ngIf="rentList.length ==0"> No books rented</p>
+    </div>
+</div>

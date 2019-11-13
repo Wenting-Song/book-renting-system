@@ -1,0 +1,20 @@
+.book-system{
+    width: 100%;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.book-list{
+    width: 100%;
+    margin: 20px auto;
+    text-align: center;
+}
+.book-list ul li{
+    text-align: left;
+    width: 300px;
+    margin: 5px auto;
+}
+
+.book-list ul li button{
+    float:right;
+}
