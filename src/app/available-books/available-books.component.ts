@@ -1,23 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import {Router, CanActivate} from "@angular/router"
-import {DataService} from "../data.service";
+import { Component, OnInit, Input } from '@angular/core';
+import {Router, CanActivate} from '@angular/router';
+import {DataService} from '../data.service';
 @Component({
   selector: 'app-available-books',
   templateUrl: './available-books.component.html',
   styleUrls: ['./available-books.component.css']
 })
 export class AvailableBooksComponent implements OnInit {
-  public bookList: any= [];
-  public rentList: any= [];
-  public curUser:any = {name: "", memNumber: ""};
-  public showBookList:boolean;
+  public bookList = [];
+  public rentList = [];
+  curUser: any = {name: '', memNumber: ''};
+  public showBookList: boolean;
   public rentModalOpen = false;
   public inputUser: any = {};
-  constructor(public router:Router, private data: DataService) { 
-    this.showBookList=true;
-    this.rentList=[];
+  @Input() public curBook: any;
+  showSaveButton = false;
+  showReturnButton = false;
+
+  constructor(public router: Router, private data: DataService) {
+
+    this.showBookList = true;
+    this.rentList = [];
     // this is demo data
-    this.bookList=[
+    this.bookList = [
       {
         "bookId": 1,
         "bookName": "Harry Potter",
@@ -68,10 +73,10 @@ export class AvailableBooksComponent implements OnInit {
       }
     ];
   }
-  getReturnData(duration:string){
-    if(!duration || duration === "") return "";
-    let curDate=new Date();
-    curDate.setDate(curDate.getDate()+ parseInt(duration));
+  getReturnDate(duration: string) {
+    if(!duration || duration === '') { return ''; }
+    const curDate = new Date();
+    curDate.setDate(curDate.getDate() + parseInt(duration));
     return curDate;
   }
   closeModal() {
@@ -79,48 +84,58 @@ export class AvailableBooksComponent implements OnInit {
   }
   ngOnInit() {
     // get the user login informtion from service
-    this.data.currentMessage.subscribe(message => this.curUser = message)
+    this.data.currentMessage.subscribe(message => this.curUser = message);
   }
   // rent method
-  rent(index: number){
+  rent(index: number) {
     this.rentModalOpen = true;
-    const curBook = this.bookList[index];
-    console.log("curBook" + curBook);
-    curBook.username=this.curUser.name;
-    curBook.membershipNo=this.curUser.memNumber;
-    curBook.returnDate=this.getReturnData(curBook.duration);
-    this.bookList.splice(index,1);
-    this.rentList.push(curBook);
-    // just print out for debug
-    console.log("rentBook: "+ curBook);
+    this.showSaveButton = true;
+    this.curBook = this.bookList[index];
+    const curDate = new Date();
+    this.curBook.returnDate = curDate.setDate(curDate.getDate() + parseInt(this.bookList[index].duration));
   }
 
   // return book method
-  returnBook(index: number){
-    const curBook=this.rentList[index];
-    curBook.username="";
-    curBook.membershipNo="";
-    curBook.returnDate="";
-    // just print out for debug
-    console.log("returnBook: "+ curBook);
-    this.rentList.splice(index,1);
-    this.bookList.push(curBook);
+  returnBook(index: number) {
+    this.rentModalOpen = true;
+    this.showReturnButton = true;
+    this.curBook = this.rentList[index];
+  }
+
+  return() {
+    if (this.curBook.username === this.inputUser.username && this.curBook.membershipNo === this.inputUser.membershipNo) {
+      this.rentList = this.rentList.filter(index => this.curBook.bookId !== index.bookId);
+      this.bookList.push(this.curBook);
+      this.showReturnButton = false;
+      this.rentModalOpen = false;
+      this.curBook = null;
+      alert("you have successfully returned this book")
+    }
+    else {
+      alert("you should input correct username and member No.")
+    }
   }
 
   // redirect back to home page
-  logout(){
+  logout() {
     this.canActivate();
   }
-  save(index: number) {
-    console.log(this.inputUser.username);
-    console.log(this.inputUser.membershipNo);
-    this.bookList[index].username = this.inputUser.username;
-    console.log(this.bookList[index].username)
+  save() {
+    this.curBook.username = this.inputUser.username;
+    this.curBook.membershipNo = this.inputUser.membershipNo;
+    this.curBook.returnDate = this.getReturnDate(this.curBook.duration);
     alert(this.inputUser.username + ' with membership No. ' + this.inputUser.membershipNo + ' has successfully rent a book');
+    this.rentList.push(this.curBook);
+    this.bookList = this.bookList.filter(index => this.curBook.bookId !== index.bookId);
+    this.curBook = null;
+    this.inputUser = {};
+    this.rentModalOpen = false;
+    this.showSaveButton = false;
+    console.log(this.rentList);
   }
 
-  canActivate():boolean{
-    if(true){
+  canActivate(): boolean {
+    if (true) {
       this.router.navigate(['home']);
       return true;
     }

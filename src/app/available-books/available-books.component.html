@@ -3,7 +3,7 @@
         <button (click)="logout()">Logout</button>
         <button (click)="showBookList=!showBookList">{{showBookList?"Show": "Hide"}} Book List</button>
     <div class="book-list">
-        <h2>Current Available Books List:</h2> 
+        <h2>Current Available Books List:</h2>
         <ul *ngIf="showBookList">
             <li *ngFor="let book of bookList; let i=index" title="{{book.bookName}} is available for rent">
                 {{book.bookName}} <button id="rentButton" (click)="rent(i)">rent</button>
@@ -12,13 +12,16 @@
                 <div class="modal-content">
                     <span class="close" (click)="closeModal()">&times;</span>
                     <form action="">
-                        <label for="">Username</label>
-                        <input [(ngModel)]="inputUser.username" ngModel type="text" name="username">
-                        <label for="">Membership Number</label>
+                        <div class="notice">You can keep this book for {{ curBook.duration }} days, it needs to be returned by  {{ curBook.returnDate | date: 'dd/MM/yyyy' }}</div>
+                        <label>Username</label>
+                        <input [(ngModel)]="inputUser.username" type="text" name="username">
+                        <label>Membership Number</label>
                         <input [(ngModel)]="inputUser.membershipNo" type="text" name="membershipNo">
-                        <button (click)="save()">save</button>
+                        <button *ngIf="showSaveButton" (click)="save()">save</button>
+                      <button *ngIf="showReturnButton" (click)="return()">save</button>
+                      
                     </form>
-                    <p *ngFor="let book of rentList">You can keep {{book.bookName}} for  {{book.duration}} days, please return it by {{book.returnDate }}</p>
+                
                 </div>
             </div>
         </ul>
