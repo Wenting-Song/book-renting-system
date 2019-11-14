@@ -1,6 +1,7 @@
 # BookLendingSystem
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.18.
+you can log in with any username and member ID you want, after log in you can rent or return books, and if you hover over the names of the books, it will show the information of the book, such as who rented this, and return due date.
 
 ## Development server
 
