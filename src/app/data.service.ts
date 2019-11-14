@@ -11,5 +11,6 @@ export class DataService {
 
   changeMessage(message: any) {
     this.messageSource.next(message)
+    console.log(this.currentMessage);
   }
 }

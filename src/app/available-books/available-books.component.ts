@@ -9,9 +9,10 @@ import {DataService} from "../data.service";
 export class AvailableBooksComponent implements OnInit {
   public bookList: any= [];
   public rentList: any= [];
-  public curUser:any ={name: "", memNumber: ""};
+  public curUser:any = {name: "", memNumber: ""};
   public showBookList:boolean;
   public rentModalOpen = false;
+  public inputUser: any = {};
   constructor(public router:Router, private data: DataService) { 
     this.showBookList=true;
     this.rentList=[];
@@ -83,7 +84,8 @@ export class AvailableBooksComponent implements OnInit {
   // rent method
   rent(index: number){
     this.rentModalOpen = true;
-    const curBook=this.bookList[index];
+    const curBook = this.bookList[index];
+    console.log("curBook" + curBook);
     curBook.username=this.curUser.name;
     curBook.membershipNo=this.curUser.memNumber;
     curBook.returnDate=this.getReturnData(curBook.duration);
@@ -108,6 +110,13 @@ export class AvailableBooksComponent implements OnInit {
   // redirect back to home page
   logout(){
     this.canActivate();
+  }
+  save(index: number) {
+    console.log(this.inputUser.username);
+    console.log(this.inputUser.membershipNo);
+    this.bookList[index].username = this.inputUser.username;
+    console.log(this.bookList[index].username)
+    alert(this.inputUser.username + ' with membership No. ' + this.inputUser.membershipNo + ' has successfully rent a book');
   }
 
   canActivate():boolean{

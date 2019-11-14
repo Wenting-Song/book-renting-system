@@ -13,9 +13,10 @@
                     <span class="close" (click)="closeModal()">&times;</span>
                     <form action="">
                         <label for="">Username</label>
-                        <input type="text" name="username">
+                        <input [(ngModel)]="inputUser.username" ngModel type="text" name="username">
                         <label for="">Membership Number</label>
-                        <input type="text" name="membershipNo">
+                        <input [(ngModel)]="inputUser.membershipNo" type="text" name="membershipNo">
+                        <button (click)="save()">save</button>
                     </form>
                     <p *ngFor="let book of rentList">You can keep {{book.bookName}} for  {{book.duration}} days, please return it by {{book.returnDate }}</p>
                 </div>
